@@ -1,7 +1,5 @@
 package com.pupachat.ui.fragments
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.pupachat.R
 import com.pupachat.models.CommonModel
@@ -24,6 +21,8 @@ class ContactsFragment : BaseFragment(R.layout.fragment_contacts) {
     private lateinit var mAdapter:FirebaseRecyclerAdapter<CommonModel, ContactsHolder>
     private lateinit var mRefContacts:DatabaseReference
     private lateinit var mRefUsers:DatabaseReference
+    private lateinit var mRefUsersListener: AppValueEventListener
+    private var mapListeners = hashMapOf<DatabaseReference, AppValueEventListener>()
 
     override fun onResume() {
         super.onResume()
@@ -52,12 +51,16 @@ class ContactsFragment : BaseFragment(R.layout.fragment_contacts) {
             ) {
                 mRefUsers = REF_DATABASE_ROOT.child(NODE_USERS).child(model.id)
 
-                mRefUsers.addValueEventListener(AppValueEventListener{
+                mRefUsersListener = AppValueEventListener {
                     val contact = it.getCommonModel()
                     holder.name.text = contact.fullname
                     holder.status.text = contact.state
                     holder.photo.downloadAndSetImage(contact.photoUrl)
-                })
+                    holder.itemView.setOnClickListener { replaceFragment(SingleChatFragment(contact)) }
+                }
+
+                mRefUsers.addValueEventListener(mRefUsersListener)
+                mapListeners[mRefUsers] = mRefUsersListener
 
             }
 
@@ -76,6 +79,10 @@ class ContactsFragment : BaseFragment(R.layout.fragment_contacts) {
     override fun onPause() {
         super.onPause()
         mAdapter.stopListening()
+        println()
+        mapListeners.forEach {
+            it.key.removeEventListener(it.value)
+        }
     }
 }
 
