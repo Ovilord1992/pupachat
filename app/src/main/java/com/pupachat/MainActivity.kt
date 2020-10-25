@@ -1,24 +1,17 @@
 package com.pupachat
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.pupachat.activities.RegisterActivity
 import com.pupachat.databinding.ActivityMainBinding
-import com.pupachat.models.User
 import com.pupachat.ui.fragments.ChatsFragment
 import com.pupachat.ui.objects.AppDrawer
 import com.pupachat.utilits.*
-import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
