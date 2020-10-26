@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import com.pupachat.activities.RegisterActivity
+import com.pupachat.database.AUTH
+import com.pupachat.database.initFirebase
+import com.pupachat.database.initUser
 import com.pupachat.databinding.ActivityMainBinding
-import com.pupachat.ui.fragments.ChatsFragment
+import com.pupachat.ui.fragments.MainFragment
+import com.pupachat.ui.fragments.register.EnterPhoneNumberFragment
 import com.pupachat.ui.objects.AppDrawer
 import com.pupachat.utilits.*
 import kotlinx.coroutines.CoroutineScope
@@ -38,12 +41,12 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun initFunc() {
+        setSupportActionBar(mToolbar)
         if (AUTH.currentUser != null){
-            setSupportActionBar(mToolbar)
             mAppDrawer.create()
-            replaceFragment(ChatsFragment(), false)
+            replaceFragment(MainFragment(), false)
         }else{
-            replaceActivity(RegisterActivity())
+            replaceFragment(EnterPhoneNumberFragment(), false)
         }
 
     }

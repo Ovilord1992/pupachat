@@ -1,17 +1,12 @@
-package com.pupachat.ui.fragments
+package com.pupachat.ui.fragments.register
 
 import androidx.fragment.app.Fragment
 import com.google.firebase.FirebaseException
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
-import com.pupachat.MainActivity
 import com.pupachat.R
-import com.pupachat.activities.RegisterActivity
-import com.pupachat.utilits.AUTH
-import com.pupachat.utilits.replaceActivity
-import com.pupachat.utilits.replaceFragment
-import com.pupachat.utilits.showToast
+import com.pupachat.database.AUTH
+import com.pupachat.utilits.*
 import kotlinx.android.synthetic.main.fragment_enter_phone_number.*
 import java.util.concurrent.TimeUnit
 
@@ -27,7 +22,7 @@ class EnterPhoneNumberFragment : Fragment(R.layout.fragment_enter_phone_number) 
                 AUTH.signInWithCredential(credential).addOnCompleteListener { task ->
                     if (task.isSuccessful){
                         showToast("Добро пожаловать")
-                        (activity as RegisterActivity).replaceActivity(MainActivity())
+                       restartActivity()
                     }
                     else{
                         showToast(task.exception?.message.toString())
@@ -40,7 +35,12 @@ class EnterPhoneNumberFragment : Fragment(R.layout.fragment_enter_phone_number) 
             }
 
             override fun onCodeSent(id: String, token: PhoneAuthProvider.ForceResendingToken) {
-                replaceFragment(EnterCodeFragment(mPhoneNumber, id))
+                replaceFragment(
+                    EnterCodeFragment(
+                        mPhoneNumber,
+                        id
+                    )
+                )
             }
         }
         register_btn_next.setOnClickListener { sendCode() }
@@ -60,7 +60,7 @@ class EnterPhoneNumberFragment : Fragment(R.layout.fragment_enter_phone_number) 
             mPhoneNumber,
             60,
             TimeUnit.SECONDS,
-            activity as RegisterActivity,
+            APP_ACTIVITY,
             mCallbeck
         )
     }

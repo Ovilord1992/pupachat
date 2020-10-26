@@ -8,11 +8,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.pupachat.R
 import com.pupachat.models.CommonModel
-import com.pupachat.utilits.CURRENT_UID
+import com.pupachat.database.CURRENT_UID
 import com.pupachat.utilits.asTime
 import kotlinx.android.synthetic.main.message_item.view.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 class SingleChatAdapter: RecyclerView.Adapter<SingleChatAdapter.SingleChatHolder>() {
     private var mListMessagesCache = emptyList<CommonModel>()

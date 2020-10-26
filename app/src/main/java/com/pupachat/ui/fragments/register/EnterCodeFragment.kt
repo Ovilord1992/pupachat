@@ -1,11 +1,10 @@
-package com.pupachat.ui.fragments
+package com.pupachat.ui.fragments.register
 
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
-import com.pupachat.MainActivity
 import com.pupachat.R
-import com.pupachat.activities.RegisterActivity
+import com.pupachat.database.*
 import com.pupachat.utilits.*
 import kotlinx.android.synthetic.main.fragment_enter_code.*
 
@@ -14,7 +13,7 @@ class EnterCodeFragment(val phoneNumber: String, val id: String) : Fragment(R.la
 
     override fun onStart() {
         super.onStart()
-        (activity as RegisterActivity).title = phoneNumber
+        APP_ACTIVITY.title = phoneNumber
         register_input_code.addTextChangedListener(AppTextWatcher {
             val string: String = register_input_code.text.toString()
             if (string.length == 6) {
@@ -37,10 +36,12 @@ class EnterCodeFragment(val phoneNumber: String, val id: String) : Fragment(R.la
                 REF_DATABASE_ROOT.child(NODE_PHONES).child(phoneNumber).setValue(uid)
                     .addOnFailureListener { showToast(it.message.toString()) }
                     .addOnSuccessListener {
-                        REF_DATABASE_ROOT.child(NODE_USERS).child(uid).updateChildren(dateMap)
+                        REF_DATABASE_ROOT.child(
+                            NODE_USERS
+                        ).child(uid).updateChildren(dateMap)
                             .addOnSuccessListener {
                                 showToast("Добро пожаловать")
-                                (activity as RegisterActivity).replaceActivity(MainActivity())
+                                restartActivity()
                             }
                             .addOnFailureListener { showToast(it.message.toString()) }
                         }

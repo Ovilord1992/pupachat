@@ -5,10 +5,11 @@ import com.pupachat.R
 import com.pupachat.utilits.APP_ACTIVITY
 
 
-class ChatsFragment : Fragment(R.layout.fragment_chats) {
+class MainFragment : Fragment(R.layout.fragment_chats) {
 
     override fun onResume() {
         super.onResume()
-        APP_ACTIVITY.title = "Чаты"
+        APP_ACTIVITY.title = "Pupa"
+        APP_ACTIVITY.mAppDrawer.enableDrawer()
     }
 }

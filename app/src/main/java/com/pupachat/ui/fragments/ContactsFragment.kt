@@ -9,6 +9,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.pupachat.R
+import com.pupachat.database.*
 import com.pupachat.models.CommonModel
 import com.pupachat.ui.fragments.single_chat.SingleChatFragment
 import com.pupachat.utilits.*
@@ -33,7 +34,9 @@ class ContactsFragment : BaseFragment(R.layout.fragment_contacts) {
 
     private fun initRecycleView() {
         mRecyclerView = contacts_recycler_view
-        mRefContacts = REF_DATABASE_ROOT.child(NODE_PHONES_CONTACTS).child(CURRENT_UID)
+        mRefContacts = REF_DATABASE_ROOT.child(
+            NODE_PHONES_CONTACTS
+        ).child(CURRENT_UID)
 
         val options = FirebaseRecyclerOptions.Builder<CommonModel>()
             .setQuery(mRefContacts, CommonModel::class.java)
@@ -50,7 +53,9 @@ class ContactsFragment : BaseFragment(R.layout.fragment_contacts) {
                 position: Int,
                 model: CommonModel
             ) {
-                mRefUsers = REF_DATABASE_ROOT.child(NODE_USERS).child(model.id)
+                mRefUsers = REF_DATABASE_ROOT.child(
+                    NODE_USERS
+                ).child(model.id)
 
                 mRefUsersListener = AppValueEventListener {
                     val contact = it.getCommonModel()
